@@ -1,0 +1,13 @@
+version: "2.2"
+services:
+  openpcdet:
+    shm_size: '2gb'
+    build: 
+      context: .
+      dockerfile: Dockerfile-dev
+      args:
+        IMAGE: supervisely/opencpdet:1.0.0
+    ports:
+      - "5555:22"
+    volumes:
+      - "./data:/data"
