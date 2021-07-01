@@ -13,8 +13,11 @@ RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
 RUN apt-get update && apt install -y cmake
 
 # Install spconv
-COPY spconv /tmp/spconv
+#COPY spconv /tmp/spconv
+WORKDIR /tmp
+RUN git clone https://github.com/traveller59/spconv.git
 WORKDIR /tmp/spconv
+RUN git checkout adb06fbdf4
 ENV SPCONV_FORCE_BUILD_CUDA=1
 RUN python3 setup.py bdist_wheel
 RUN pip3 install dist/*.whl
@@ -30,8 +33,13 @@ RUN ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config
 ARG TORCH_CUDA_ARCH_LIST="5.2 6.0 6.1 7.0 7.5+PTX"
 
 # Install OpenPCDet
-COPY OpenPCDet /tmp/OpenPCDet
+#COPY OpenPCDet /tmp/OpenPCDet
+#WORKDIR /tmp/OpenPCDet
+WORKDIR /tmp
+RUN git clone https://github.com/open-mmlab/OpenPCDet
 WORKDIR /tmp/OpenPCDet
+RUN git checkout 0642cf06d0
+
 RUN pip3 install -r requirements.txt
 RUN python3 setup.py develop
 
