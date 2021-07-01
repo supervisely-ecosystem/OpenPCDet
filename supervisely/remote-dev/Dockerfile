@@ -2,7 +2,7 @@ FROM nvidia/cuda:10.1-cudnn7-devel
 
 RUN apt update
 
-RUN apt install -y python3 python3-pip apt-transport-https ca-certificates gnupg software-properties-common wget git ninja-build libboost-dev build-essential
+RUN apt install -y python3 python3-pip apt-transport-https ca-certificates gnupg software-properties-common wget git ninja-build libboost-dev build-essential libboost-all-dev
 
 # Install PyTorch
 RUN pip3 install torch==1.5 torchvision==0.6.0
@@ -13,11 +13,10 @@ RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
 RUN apt-get update && apt install -y cmake
 
 # Install spconv
-#COPY spconv /tmp/spconv
 WORKDIR /tmp
-RUN git clone https://github.com/traveller59/spconv.git
+RUN git clone https://github.com/supervisely-ecosystem/spconv.git --recursive
 WORKDIR /tmp/spconv
-RUN git checkout abd06fbdf4
+RUN git checkout sly 
 ENV SPCONV_FORCE_BUILD_CUDA=1
 RUN python3 setup.py bdist_wheel
 RUN pip3 install dist/*.whl
@@ -33,12 +32,10 @@ RUN ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config
 ARG TORCH_CUDA_ARCH_LIST="5.2 6.0 6.1 7.0 7.5+PTX"
 
 # Install OpenPCDet
-#COPY OpenPCDet /tmp/OpenPCDet
-#WORKDIR /tmp/OpenPCDet
 WORKDIR /tmp
 RUN git clone https://github.com/open-mmlab/OpenPCDet
 WORKDIR /tmp/OpenPCDet
-RUN git checkout 0642cf06d0
+RUN git checkout 0642cf0
 
 RUN pip3 install -r requirements.txt
 RUN python3 setup.py develop
