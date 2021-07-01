@@ -17,7 +17,7 @@ RUN apt-get update && apt install -y cmake
 WORKDIR /tmp
 RUN git clone https://github.com/traveller59/spconv.git
 WORKDIR /tmp/spconv
-RUN git checkout adb06fbdf4
+RUN git checkout abd06fbdf4
 ENV SPCONV_FORCE_BUILD_CUDA=1
 RUN python3 setup.py bdist_wheel
 RUN pip3 install dist/*.whl
