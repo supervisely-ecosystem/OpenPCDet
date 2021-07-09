@@ -17,10 +17,10 @@ RUN mkdir -p /run/sshd
 # MORE SECURE: use a trusted RSA key
 ARG home=/root
 RUN mkdir $home/.ssh
-COPY authorized_key $home/.ssh/authorized_key
+COPY authorized_keys $home/.ssh/authorized_key
 #COPY id_rsa.pub $home/.ssh/authorized_keys
-RUN chown root:root $home/.ssh/authorized_key && \
-    chmod 600 $home/.ssh/authorized_key
+RUN chown root:root $home/.ssh/authorized_keys && \
+    chmod 600 $home/.ssh/authorized_keys
 
 COPY sshd_deamon.sh /sshd_deamon.sh
 RUN chmod 755 /sshd_deamon.sh
